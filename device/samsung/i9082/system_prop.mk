@@ -72,7 +72,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.timezone=America/Santiago
 
 # === Bring-up ADB Debugging (userdebug) ===
-ADDITIONAL_DEFAULT_PROPERTIES += \
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.adb.secure=0 \
     ro.secure=0 \
     persist.service.adb.enable=1
