@@ -36,6 +36,10 @@ class TestLineage16PieGoTree(unittest.TestCase):
         self.assertGreaterEqual(len(lm_root.findall("project")), 4)
 
     def test_extracted_vendor_blobs_exist_and_nonempty(self):
+        import subprocess
+        git_files = set(
+            subprocess.check_output(["git", "-C", str(PROJECT_ROOT), "ls-files"], text=True).splitlines()
+        )
         vendor_mk = (PROJECT_ROOT / "vendor/samsung/i9082/i9082-vendor.mk").read_text(encoding="utf-8")
         refs = re.findall(r"\$\(LOCAL_PATH\)/(proprietary/[^\s:\\]+):", vendor_mk)
         self.assertGreaterEqual(len(refs), 100, "Se esperaban >= 100 blobs extraídos del GT-I9082L")
@@ -43,6 +47,8 @@ class TestLineage16PieGoTree(unittest.TestCase):
             p = PROJECT_ROOT / "vendor/samsung/i9082" / rel
             self.assertTrue(p.exists(), f"Falta blob: {p}")
             self.assertGreater(p.stat().st_size, 0, f"Blob vacío: {p}")
+            git_rel = f"vendor/samsung/i9082/{rel}"
+            self.assertIn(git_rel, git_files, f"Colisión de mayúsculas/minúsculas en git: {git_rel}")
 
     def test_board_config_sizes_fit_real_device_pit(self):
         pit_bytes = (PROJECT_ROOT / "out/gt_i9082l.pit").read_bytes()
