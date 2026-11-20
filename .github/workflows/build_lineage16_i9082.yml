@@ -92,8 +92,10 @@ jobs:
           cp -a "$GITHUB_WORKSPACE/vendor/samsung/i9082" "$LOS_DIR/vendor/samsung/i9082"
 
           cd "$LOS_DIR/kernel/samsung/i9082"
-          git apply "$GITHUB_WORKSPACE"/kernel/samsung/i9082/patches/0001-*.patch
-          git apply "$GITHUB_WORKSPACE"/kernel/samsung/i9082/patches/0002-*.patch
+          for p in "$GITHUB_WORKSPACE"/kernel/samsung/i9082/patches/*.patch; do
+            echo "[*] Applying kernel patch: $(basename "$p")"
+            git apply "$p"
+          done
 
           echo "=== Liberando .repo y prebuilts no usados (~22 GB recuperados) ==="
           cd "$LOS_DIR"

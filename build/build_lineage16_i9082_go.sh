@@ -36,8 +36,10 @@ cp -a "$PROJECT_DIR/vendor/samsung/i9082" "$LOS_DIR/vendor/samsung/i9082"
 echo "=== [4/5] Aplicando parches Android 9.0 Pie Go al kernel Linux 3.0.101 ==="
 cd "$LOS_DIR/kernel/samsung/i9082"
 if [ ! -f "arch/arm/configs/lineageos_i9082_pie_go_defconfig" ]; then
-    git apply "$PROJECT_DIR"/kernel/samsung/i9082/patches/0001-*.patch
-    git apply "$PROJECT_DIR"/kernel/samsung/i9082/patches/0002-*.patch
+    for p in "$PROJECT_DIR"/kernel/samsung/i9082/patches/*.patch; do
+        echo "[*] Aplicando parche: $(basename "$p")"
+        git apply "$p"
+    done
 fi
 cd "$LOS_DIR"
 

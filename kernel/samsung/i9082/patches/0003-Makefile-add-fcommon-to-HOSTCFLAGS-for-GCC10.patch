@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: GT-I9082L Pie Go Builder <i9082l-pie-go@local>
+Date: Fri, 20 Nov 2026 00:11:00 -0300
+Subject: [PATCH 3/3] Makefile: add -fcommon to HOSTCFLAGS for GCC 10+ host builds
+
+GCC 10+ switched default from -fcommon to -fno-common, causing multiple
+definition link errors (such as yylloc in scripts/dtc) when building
+Linux 3.0.101 host tools on Ubuntu 22.04.
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 1111111..2222222 100644
+--- a/Makefile
++++ b/Makefile
+@@ -245,7 +245,7 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
+ 
+ HOSTCC       = gcc
+ HOSTCXX      = g++
+-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
++HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -fcommon
+ HOSTCXXFLAGS = -O2
+ 
+ # Decide whether to build built-in, modular, or both.
+-- 
+2.39.0
