@@ -1,0 +1,26 @@
+# Reproducible Ubuntu 20.04 x86_64 Build Environment for LineageOS 16.0 (Android 9.0 Pie Go)
+# Build on any Linux x86_64 host or cloud VM:
+#   docker build -f build/Dockerfile.lineage16 -t lineage16-i9082-builder .
+#   docker run --rm -it -v "$PWD":/workspace -v "$HOME/lineage-16.0":/lineage lineage16-i9082-builder
+
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bc bison build-essential ccache curl flex g++-multilib gcc-multilib \
+    git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev \
+    lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev \
+    libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool \
+    squashfs-tools xsltproc zip zlib1g-dev openjdk-8-jdk python2 python3 \
+    ca-certificates wget xz-utils lzma \
+    && ln -sf /usr/bin/python2 /usr/bin/python \
+    && curl -fsSL https://storage.googleapis.com/git-repo-downloads/repo -o /usr/local/bin/repo \
+    && chmod +x /usr/local/bin/repo \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+ENV LOS_DIR=/lineage
+CMD ["/bin/bash", "/workspace/build/build_lineage16_i9082_go.sh"]

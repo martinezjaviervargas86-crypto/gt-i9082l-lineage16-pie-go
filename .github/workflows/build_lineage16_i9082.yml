@@ -1,0 +1,147 @@
+name: Build LineageOS 16.0 (Android 9.0 Pie Go) - GT-I9082L
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_target:
+        description: 'Objetivo: bootimage (~30 min, prueba kernel 3.0.101 Pie) o bacon (~3-4h, ROM .zip completa)'
+        required: true
+        default: 'bootimage'
+        type: choice
+        options:
+          - bootimage
+          - bacon
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout proyecto GT-I9082L Pie Go
+        uses: actions/checkout@v4
+
+      - name: Liberar máximo espacio en disco del runner gratuito (~75-80 GB)
+        run: |
+          echo "=== Espacio inicial ==="
+          df -h
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache/CodeQL \
+            /usr/local/share/boost \
+            /usr/local/share/chromium \
+            /usr/share/swift \
+            /usr/local/.ghcup \
+            /opt/microsoft \
+            /usr/share/miniconda \
+            /usr/local/julia* || true
+          sudo apt-get clean
+          sudo docker image prune --all --force || true
+          echo "=== Espacio tras limpieza ==="
+          df -h
+
+      - name: Instalar dependencias de compilación LineageOS 16.0
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            bc bison build-essential ccache curl flex g++-multilib gcc-multilib \
+            git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev \
+            lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev \
+            libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool \
+            squashfs-tools xsltproc zip zlib1g-dev openjdk-8-jdk python2 python3 \
+            lzma xz-utils cpio
+          sudo ln -sf /usr/bin/python2 /usr/bin/python
+          sudo curl -fsSL https://storage.googleapis.com/git-repo-downloads/repo -o /usr/local/bin/repo
+          sudo chmod +x /usr/local/bin/repo
+
+      - name: Configurar Swap de 8 GB en /mnt para evitar OOM en Java/Soong
+        run: |
+          sudo fallocate -l 8G /mnt/swapfile || sudo dd if=/dev/zero of=/mnt/swapfile bs=1M count=8192
+          sudo chmod 600 /mnt/swapfile
+          sudo mkswap /mnt/swapfile
+          sudo swapon /mnt/swapfile
+          free -h
+
+      - name: Sincronizar LineageOS 16.0 (dieta ARM32 sin darwin/mips) y liberar .repo
+        env:
+          LOS_DIR: /home/runner/lineage-16.0
+        run: |
+          mkdir -p "$LOS_DIR/.repo/local_manifests"
+          cd "$LOS_DIR"
+          git config --global user.name "GT-I9082L Pie Go Builder"
+          git config --global user.email "i9082l-pie-go@users.noreply.github.com"
+          git config --global color.ui false
+
+          # -g default,-darwin,-mips,-notdefault ahorra ~15 GB de toolchains macOS/MIPS
+          repo init -u https://github.com/LineageOS/android.git \
+            -b lineage-16.0 \
+            -g default,-darwin,-mips,-notdefault \
+            --depth=1 --no-clone-bundle
+
+          cp "$GITHUB_WORKSPACE/build/lineage16_local_manifest.xml" \
+             "$LOS_DIR/.repo/local_manifests/i9082_pie_go.xml"
+
+          repo sync -c --force-sync --no-clone-bundle --no-tags -j"$(nproc)"
+
+          echo "=== Instalando device tree, vendor blobs reales y parches del kernel 3.0.101 ==="
+          rm -rf "$LOS_DIR/device/samsung/i9082" "$LOS_DIR/vendor/samsung/i9082"
+          mkdir -p "$LOS_DIR/device/samsung" "$LOS_DIR/vendor/samsung"
+          cp -a "$GITHUB_WORKSPACE/device/samsung/i9082" "$LOS_DIR/device/samsung/i9082"
+          cp -a "$GITHUB_WORKSPACE/vendor/samsung/i9082" "$LOS_DIR/vendor/samsung/i9082"
+
+          cd "$LOS_DIR/kernel/samsung/i9082"
+          git apply "$GITHUB_WORKSPACE"/kernel/samsung/i9082/patches/0001-*.patch
+          git apply "$GITHUB_WORKSPACE"/kernel/samsung/i9082/patches/0002-*.patch
+
+          echo "=== Liberando .repo y prebuilts no usados (~22 GB recuperados) ==="
+          cd "$LOS_DIR"
+          rm -rf .repo \
+            prebuilts/gcc/linux-x86/aarch64 \
+            prebuilts/gcc/linux-x86/mips \
+            prebuilts/qemu-kernel \
+            prebuilts/android-emulator
+          df -h
+
+      - name: Compilar LineageOS 16.0 (Android 9.0 Pie Go) - ${{ inputs.build_target }}
+        env:
+          LOS_DIR: /home/runner/lineage-16.0
+        run: |
+          cd "$LOS_DIR"
+          export LC_ALL=C
+          export LANG=C
+          export JAVA_OPTS="-Xmx6g"
+          export _JAVA_OPTIONS="-Xmx6g"
+          set -o pipefail
+          source build/envsetup.sh
+          lunch lineage_i9082-userdebug
+          mka ${{ inputs.build_target }} -j"$(nproc)" 2>&1 | tee "$GITHUB_WORKSPACE/build.log"
+          df -h
+
+      - name: Subir ROM / boot.img generado
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gt-i9082l-lineage16-pie-go-${{ inputs.build_target }}
+          retention-days: 14
+          path: |
+            /home/runner/lineage-16.0/out/target/product/i9082/lineage-16.0-*.zip
+            /home/runner/lineage-16.0/out/target/product/i9082/boot.img
+            /home/runner/lineage-16.0/out/target/product/i9082/obj/KERNEL_OBJ/arch/arm/boot/zImage
+
+      - name: Subir últimos logs de compilación (para depurar si falla)
+        if: always()
+        run: |
+          if [ -f "$GITHUB_WORKSPACE/build.log" ]; then
+            tail -n 3000 "$GITHUB_WORKSPACE/build.log" > "$GITHUB_WORKSPACE/build_tail.log"
+          fi
+
+      - name: Adjuntar build_tail.log como artefacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gt-i9082l-build-log-${{ inputs.build_target }}
+          retention-days: 7
+          if-no-files-found: ignore
+          path: build_tail.log

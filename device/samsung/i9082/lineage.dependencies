@@ -1,0 +1,26 @@
+[
+  {
+    "remote": "github",
+    "repository": "ghsr/android_kernel_samsung_i9082",
+    "target_path": "kernel/samsung/i9082",
+    "revision": "android-7.1"
+  },
+  {
+    "remote": "github",
+    "repository": "LineageOS/android_hardware_samsung",
+    "target_path": "hardware/samsung",
+    "revision": "lineage-16.0"
+  },
+  {
+    "remote": "github",
+    "repository": "LineageOS/android_external_stlport",
+    "target_path": "external/stlport",
+    "revision": "lineage-16.0"
+  },
+  {
+    "remote": "github",
+    "repository": "LineageOS/android_packages_resources_devicesettings",
+    "target_path": "packages/resources/devicesettings",
+    "revision": "lineage-16.0"
+  }
+]

@@ -1,0 +1,10 @@
+# NEVER upload private device backups (efs.img / IMEI / modem / PIT) or local build outputs!
+out/
+reference/
+tools/libmacos_usb.dylib
+kernel/samsung/i9082/src/
+
+# Python / macOS artifacts
+__pycache__/
+*.pyc
+.DS_Store
