@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Hardware keys on GT-I9082L: Home (1) + Back (2) + Menu (4) + Volume rocker (64) = 71 -->
+    <integer name="config_deviceHardwareKeys">71</integer>
+    <!-- Wake keys: Home (1) + Volume rocker (64) = 65 -->
+    <integer name="config_deviceHardwareWakeKeys">65</integer>
+</resources>
