@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: GT-I9082L Pie Go Builder <i9082l-pie-go@local>
+Date: Fri, 20 Nov 2026 00:40:00 -0300
+Subject: [PATCH 4/4] staging: android: binder: add SIZE_MAX and wait_event_freezable_exclusive for Linux 3.0
+
+Linux 3.0.101 lacks SIZE_MAX in kernel headers and wait_event_freezable_exclusive
+in include/linux/freezer.h. Define both locally using Linux 3.0 wait/freezer primitives.
+---
+ drivers/staging/android/binder.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/drivers/staging/android/binder.c b/drivers/staging/android/binder.c
+index 1111111..2222222 100644
+--- a/drivers/staging/android/binder.c
++++ b/drivers/staging/android/binder.c
+@@ -41,6 +41,31 @@
+ #include "binder.h"
+ #include "binder_trace.h"
+ 
++#ifndef SIZE_MAX
++#define SIZE_MAX (~(size_t)0)
++#endif
++
++#ifndef wait_event_freezable_exclusive
++#ifdef CONFIG_FREEZER
++#define wait_event_freezable_exclusive(wq, condition)			\
++({									\
++	int __retval;							\
++	do {								\
++		__retval = wait_event_interruptible_exclusive(wq,	\
++				(condition) || freezing(current));	\
++		if (__retval && !freezing(current))			\
++			break;						\
++		else if (!(condition))					\
++			__retval = -ERESTARTSYS;			\
++	} while (try_to_freeze());					\
++	__retval;							\
++})
++#else
++#define wait_event_freezable_exclusive(wq, condition)			\
++	wait_event_interruptible_exclusive(wq, condition)
++#endif
++#endif
++
+ static DEFINE_MUTEX(binder_main_lock);
+ static DEFINE_MUTEX(binder_deferred_lock);
+ static DEFINE_MUTEX(binder_mmap_lock);
+-- 
+2.39.0

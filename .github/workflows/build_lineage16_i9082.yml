@@ -136,6 +136,8 @@ jobs:
         run: |
           if [ -f "$GITHUB_WORKSPACE/build.log" ]; then
             tail -n 3000 "$GITHUB_WORKSPACE/build.log" > "$GITHUB_WORKSPACE/build_tail.log"
+            echo "=== Resumen de errores en build_tail.log ==="
+            grep -n -C 2 -E "error:|FAILED:|ninja: build stopped" "$GITHUB_WORKSPACE/build_tail.log" | tail -n 80 || true
           fi
 
       - name: Adjuntar build_tail.log como artefacto
