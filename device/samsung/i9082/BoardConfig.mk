@@ -85,9 +85,6 @@ BOARD_HARDWARE_CLASS += hardware/samsung/lineagehw
 # Audio (use legacy audio_policy.conf cleanly on Pie)
 USE_XML_AUDIO_POLICY_CONF := 0
 
-# RIL (Dual-SIM DSDS Broadcom via Pie HIDL IRadio)
-BOARD_PROVIDES_LIBRIL := true
-
 # Legacy prebuilt ELF compatibility on Android 9.0 Pie Soong/Kati
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true

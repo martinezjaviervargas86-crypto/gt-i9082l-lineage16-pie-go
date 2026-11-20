@@ -5,7 +5,6 @@ LOCAL_PATH := vendor/samsung/i9082
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/bin/BCM4334B0_002.001.013.0679.0000_03_Samsung_BaffinSpurCancellAlwaysOn.hcd:system/bin/BCM4334B0_002.001.013.0679.0000_03_Samsung_BaffinSpurCancellAlwaysOn.hcd \
-    $(LOCAL_PATH)/proprietary/bin/atrace:system/bin/atrace \
     $(LOCAL_PATH)/proprietary/bin/bkmgrd:system/bin/bkmgrd \
     $(LOCAL_PATH)/proprietary/bin/cate_rpc_util:system/bin/cate_rpc_util \
     $(LOCAL_PATH)/proprietary/bin/emma:system/bin/emma \
@@ -17,7 +16,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/bin/macloader:system/bin/macloader \
     $(LOCAL_PATH)/proprietary/bin/mttlogger:system/bin/mttlogger \
     $(LOCAL_PATH)/proprietary/bin/npsmobex:system/bin/npsmobex \
-    $(LOCAL_PATH)/proprietary/bin/rild:system/bin/rild \
     $(LOCAL_PATH)/proprietary/bin/tvserver:system/bin/tvserver \
     $(LOCAL_PATH)/proprietary/bin/vcdbg:system/bin/vcdbg \
     $(LOCAL_PATH)/proprietary/bin/vclmk:system/bin/vclmk \
@@ -38,7 +36,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/etc/wifi/bcmdhd_apsta.bin_b2:system/etc/wifi/bcmdhd_apsta.bin_b2 \
     $(LOCAL_PATH)/proprietary/etc/wifi/bcmdhd_sta.bin_b2:system/etc/wifi/bcmdhd_sta.bin_b2 \
     $(LOCAL_PATH)/proprietary/etc/wifi/nvram_net.txt:system/etc/wifi/nvram_net.txt \
-    $(LOCAL_PATH)/proprietary/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
     $(LOCAL_PATH)/proprietary/lib/hw/alsa.default.so:system/lib/hw/alsa.default.so \
     $(LOCAL_PATH)/proprietary/lib/hw/audio.hdmi.capri.so:system/lib/hw/audio.hdmi.capri.so \
     $(LOCAL_PATH)/proprietary/lib/hw/audio.primary.capri.so:system/lib/hw/audio.primary.capri.so \
@@ -75,7 +72,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/lib/libmmal_util.so:system/lib/libmmal_util.so \
     $(LOCAL_PATH)/proprietary/lib/libmmal_vc.so:system/lib/libmmal_vc.so \
     $(LOCAL_PATH)/proprietary/lib/libomxmmal.so:system/lib/libomxmmal.so \
-    $(LOCAL_PATH)/proprietary/lib/libril.so:system/lib/libril.so \
     $(LOCAL_PATH)/proprietary/lib/librpc.so:system/lib/librpc.so \
     $(LOCAL_PATH)/proprietary/lib/libsamsungRecord.so:system/lib/libsamsungRecord.so \
     $(LOCAL_PATH)/proprietary/lib/libsamsungSoundbooster.so:system/lib/libsamsungSoundbooster.so \
