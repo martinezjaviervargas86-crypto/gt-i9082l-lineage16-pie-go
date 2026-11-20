@@ -24,15 +24,14 @@ TARGET_NO_BOOTLOADER := true
 TARGET_BOOTLOADER_BOARD_NAME := capri
 
 # Kernel (Linux 3.0.101 with Android 9.0 Pie backports: hwbinder/vndbinder, zram, qtaguid, SELinux)
+TARGET_KERNEL_ARCH := arm
+TARGET_KERNEL_HEADER_ARCH := arm
 TARGET_KERNEL_SOURCE := kernel/samsung/i9082
 TARGET_KERNEL_CONFIG := lineageos_i9082_pie_go_defconfig
+BOARD_KERNEL_IMAGE_NAME := zImage
 BOARD_KERNEL_CMDLINE := console=ttyS0,115200n8 mem=832M@0xA2000000 androidboot.console=ttyS0 vc-cma-mem=0/176M@0xCB000000 androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0xa2000000
 BOARD_KERNEL_PAGESIZE := 4096
-
-# Kernel toolchain (GCC 4.9 ARM EABI compatible with Linux 3.0.101)
-KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/arm/arm-linux-androideabi-4.9/bin
-KERNEL_TOOLCHAIN_PREFIX := arm-linux-androideabi-
 TARGET_KERNEL_CLANG_COMPILE := false
 
 # File systems & verified GT-I9082L PIT partition sizes (from out/gt_i9082l.pit)
@@ -63,15 +62,12 @@ TARGET_RECOVERY_FSTAB := device/samsung/i9082/rootdir/fstab.capri
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/android0/f_mass_storage/lun%d/file"
 TARGET_RECOVERY_PIXEL_FORMAT := ABGR_8888
 TARGET_RECOVERY_DENSITY := hdpi
-BOARD_CUSTOM_BOOTIMG_MK := device/samsung/i9082/mkbootimg.mk
-TARGET_NOT_USE_GZIP_RECOVERY_RAMDISK := true
 
 # Hardware rendering (Broadcom VideoCore IV - OpenGL ES 2.0, HWC1 via hwc2on1adapter)
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
 TARGET_USES_HWC2 := false
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 TARGET_REQUIRES_SYNCHRONOUS_SETSURFACE := true
-BOARD_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS -DCAPRI_HWC -DREFBASE_JB_MR1_COMPAT_SYMBOLS
 USE_OPENGL_RENDERER := true
 
 # Pie ABI Shims for prebuilt Broadcom JB/KK blobs
@@ -90,8 +86,11 @@ BOARD_HARDWARE_CLASS += hardware/samsung/lineagehw
 USE_XML_AUDIO_POLICY_CONF := 0
 
 # RIL (Dual-SIM DSDS Broadcom via Pie HIDL IRadio)
-BOARD_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
 BOARD_PROVIDES_LIBRIL := true
+
+# Legacy prebuilt ELF compatibility on Android 9.0 Pie Soong/Kati
+BUILD_BROKEN_DUP_RULES := true
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 
 # GPS
 TARGET_SPECIFIC_HEADER_PATH := device/samsung/i9082/include
