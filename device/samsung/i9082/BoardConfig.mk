@@ -57,8 +57,9 @@ DEVICE_MANIFEST_FILE := device/samsung/i9082/manifest.xml
 PRODUCT_FULL_TREBLE_OVERRIDE := false
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
-# Recovery
+# Recovery & OTA device assertions (strictly GT-I9082 / GT-I9082L / baffin family)
 TARGET_RECOVERY_FSTAB := device/samsung/i9082/rootdir/fstab.capri
+TARGET_OTA_ASSERT_DEVICE := i9082,i9082l,baffin,baffinvj,GT-I9082,GT-I9082L
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/android0/f_mass_storage/lun%d/file"
 TARGET_RECOVERY_PIXEL_FORMAT := ABGR_8888
 TARGET_RECOVERY_DENSITY := hdpi

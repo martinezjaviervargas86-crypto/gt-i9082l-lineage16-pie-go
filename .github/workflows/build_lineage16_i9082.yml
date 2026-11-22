@@ -47,10 +47,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             bc bison build-essential ccache curl flex g++-multilib gcc-multilib \
-            git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev \
+            git git-lfs gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev \
             lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev \
             libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool \
-            squashfs-tools xsltproc zip zlib1g-dev openjdk-8-jdk python2 python3 \
+            squashfs-tools unzip xsltproc zip zlib1g-dev openjdk-8-jdk python2 python3 \
             lzma xz-utils cpio
           sudo ln -sf /usr/bin/python2 /usr/bin/python
           sudo curl -fsSL https://storage.googleapis.com/git-repo-downloads/repo -o /usr/local/bin/repo
@@ -75,15 +75,22 @@ jobs:
           git config --global color.ui false
 
           # -g default,-darwin,-mips,-notdefault ahorra ~15 GB de toolchains macOS/MIPS
+          # --git-lfs descarga binarios reales de review.lineageos.org (ej. chromium-webview ARM)
+          git lfs install --skip-repo
           repo init -u https://github.com/LineageOS/android.git \
             -b lineage-16.0 \
             -g default,-darwin,-mips,-notdefault \
-            --depth=1 --no-clone-bundle
+            --depth=1 --no-clone-bundle --git-lfs
 
           cp "$GITHUB_WORKSPACE/build/lineage16_local_manifest.xml" \
              "$LOS_DIR/.repo/local_manifests/i9082_pie_go.xml"
 
           repo sync -c --force-sync --no-clone-bundle --no-tags -j"$(nproc)"
+
+          echo "=== Verificando binarios Git LFS antes de eliminar .repo ==="
+          (cd "$LOS_DIR/external/chromium-webview/prebuilt/arm" && git lfs pull)
+          ls -lh "$LOS_DIR/external/chromium-webview/prebuilt/arm/webview.apk"
+          zipinfo -t "$LOS_DIR/external/chromium-webview/prebuilt/arm/webview.apk"
 
           echo "=== Instalando device tree, vendor blobs reales y parches del kernel 3.0.101 ==="
           rm -rf "$LOS_DIR/device/samsung/i9082" "$LOS_DIR/vendor/samsung/i9082"
