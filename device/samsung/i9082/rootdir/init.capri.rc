@@ -1,5 +1,5 @@
-import init.bcm281x5.usb.rc
-import init.log.rc
+import /init.bcm281x5.usb.rc
+import /init.log.rc
 
 on early-init
     loglevel 9
