@@ -91,7 +91,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/lib/libvcfiled.so:system/lib/libvcfiled.so \
     $(LOCAL_PATH)/proprietary/lib/libvchiq.so:system/lib/libvchiq.so \
     $(LOCAL_PATH)/proprietary/lib/libvchwtest_driver.so:system/lib/libvchwtest_driver.so \
-    $(LOCAL_PATH)/proprietary/lib/libVCOS.so:system/lib/libvcos.so \
+    $(LOCAL_PATH)/proprietary/lib/libvcos_lower.so:system/lib/libvcos.so \
+    $(LOCAL_PATH)/proprietary/lib/libstlport.so:system/lib/libstlport.so \
     $(LOCAL_PATH)/proprietary/lib/libvcsm.so:system/lib/libvcsm.so \
     $(LOCAL_PATH)/proprietary/lib/modules/VoiceSolution.ko:system/lib/modules/VoiceSolution.ko \
     $(LOCAL_PATH)/proprietary/usr/lib/alsa-lib/libasound_module_pcm_bcmfilter.so:system/usr/lib/alsa-lib/libasound_module_pcm_bcmfilter.so \

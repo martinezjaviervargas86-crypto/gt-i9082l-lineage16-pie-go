@@ -33,6 +33,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # === Broadcom VideoCore IV (OpenGL ES 2.0) Pie Graphics Tuning ===
 # Force legacy OpenGL HWUI renderer (SkiaGL causes glitches/overhead on VC4 GLES 2.0)
 PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hardware.egl=vc4 \
     ro.opengles.version=131072 \
     debug.hwui.renderer=opengl \
     debug.hwui.render_dirty_regions=false \

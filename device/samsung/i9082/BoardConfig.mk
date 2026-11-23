@@ -29,7 +29,7 @@ TARGET_KERNEL_HEADER_ARCH := arm
 TARGET_KERNEL_SOURCE := kernel/samsung/i9082
 TARGET_KERNEL_CONFIG := lineageos_i9082_pie_go_defconfig
 BOARD_KERNEL_IMAGE_NAME := zImage
-BOARD_KERNEL_CMDLINE := console=ttyS0,115200n8 mem=832M@0xA2000000 androidboot.console=ttyS0 vc-cma-mem=0/176M@0xCB000000 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := console=ttyS0,115200n8 mem=832M@0xA2000000 androidboot.console=ttyS0 vc-cma-mem=0/176M@0xCB000000 androidboot.hardware=capri androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0xa2000000
 BOARD_KERNEL_PAGESIZE := 4096
 TARGET_KERNEL_CLANG_COMPILE := false
@@ -72,11 +72,13 @@ TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 TARGET_REQUIRES_SYNCHRONOUS_SETSURFACE := true
 USE_OPENGL_RENDERER := true
 
-# Pie ABI Shims for prebuilt Broadcom JB/KK blobs
+# Pie ABI Shims for prebuilt Broadcom JB/KK blobs (verified by ELF audit)
 TARGET_LD_SHIM_LIBS := \
-    /system/bin/rild|libcapri_pie_shim.so \
+    /system/vendor/bin/hw/rild|libcapri_pie_shim.so \
     /system/lib/libbrcm_ril.so|libcapri_pie_shim.so \
     /system/lib/libtvservice_binder.so|libcapri_pie_shim.so \
+    /system/lib/hw/audio.primary.capri.so|libcapri_pie_shim.so \
+    /system/vendor/lib/hw/hwcomposer.capri.so|libcapri_pie_shim.so \
     /system/vendor/lib/hw/camera.capri.so|libcapri_pie_shim.so \
     /system/vendor/lib/egl/libGLES_vc4.so|libcapri_pie_shim.so \
     /system/bin/glgps|libglgps-compat.so
@@ -112,7 +114,7 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB    := lib_driver_cmd_bcmdhd
 BOARD_HOSTAPD_DRIVER                := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB           := lib_driver_cmd_bcmdhd
 WIFI_DRIVER_MODULE_NAME             := "dhd"
-WIFI_DRIVER_MODULE_PATH             := "/system/lib/modules/dhd.ko"
+WIFI_DRIVER_MODULE_PATH             := "/vendor/lib/modules/dhd.ko"
 WIFI_DRIVER_FW_PATH_PARAM           := "/sys/module/dhd/parameters/firmware_path"
 WIFI_DRIVER_FW_PATH_AP              := "/system/etc/wifi/bcmdhd_apsta.bin_b2"
 WIFI_DRIVER_FW_PATH_STA             := "/system/etc/wifi/bcmdhd_sta.bin_b2"

@@ -22,8 +22,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/init.bcm281x5.usb.rc:root/init.bcm281x5.usb.rc \
     $(LOCAL_PATH)/rootdir/init.log.rc:root/init.log.rc \
     $(LOCAL_PATH)/rootdir/init.recovery.capri.rc:root/init.recovery.capri.rc \
-    $(LOCAL_PATH)/rootdir/ueventd.capri.rc:root/ueventd.capri.rc \
-    $(LOCAL_PATH)/rootdir/rild.rc:system/etc/init/rild.rc
+    $(LOCAL_PATH)/rootdir/ueventd.capri.rc:root/ueventd.capri.rc
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
@@ -38,7 +37,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libcapri_pie_shim \
     libglgps-compat \
-    libstlport \
     charger_res_images
 
 # Android 9.0 Pie HIDL HAL Wrappers (bridging legacy Broadcom Capri HAL1 blobs)
