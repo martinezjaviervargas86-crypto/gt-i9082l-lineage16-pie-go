@@ -124,7 +124,11 @@ jobs:
           export _JAVA_OPTIONS="-Xmx6g"
           set -o pipefail
           source build/envsetup.sh
-          (lunch lineage_i9082-userdebug && mka ${{ inputs.build_target }} -j"$(nproc)") 2>&1 | tee "$GITHUB_WORKSPACE/build.log"
+          MKA_TARGETS="${{ inputs.build_target }}"
+          if [ "$MKA_TARGETS" = "bootimage" ]; then
+            MKA_TARGETS="bootimage libcapri_pie_shim"
+          fi
+          (lunch lineage_i9082-userdebug && mka $MKA_TARGETS -j"$(nproc)") 2>&1 | tee "$GITHUB_WORKSPACE/build.log"
           df -h
 
       - name: Subir ROM / boot.img generado
@@ -136,6 +140,7 @@ jobs:
           path: |
             /home/runner/lineage-16.0/out/target/product/i9082/lineage-16.0-*.zip
             /home/runner/lineage-16.0/out/target/product/i9082/boot.img
+            /home/runner/lineage-16.0/out/target/product/i9082/system/lib/libcapri_pie_shim.so
             /home/runner/lineage-16.0/out/target/product/i9082/obj/KERNEL_OBJ/arch/arm/boot/zImage
 
       - name: Subir últimos logs de compilación (para depurar si falla)

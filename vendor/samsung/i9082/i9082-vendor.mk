@@ -100,6 +100,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/usr/lib/alsa-lib/libbcm_test_filter.so:system/usr/lib/alsa-lib/libbcm_test_filter.so \
     $(LOCAL_PATH)/proprietary/usr/share/alsa/alsa.conf:system/usr/share/alsa/alsa.conf \
     $(LOCAL_PATH)/proprietary/vendor/lib/egl/libGLES_vc4.so:system/vendor/lib/egl/libGLES_vc4.so \
+    $(LOCAL_PATH)/proprietary/vendor/lib/egl/libGLES_vc4.so:system/vendor/lib/libGLES_vc4.so \
     $(LOCAL_PATH)/proprietary/vendor/lib/hw/camera.capri.so:system/vendor/lib/hw/camera.capri.so \
     $(LOCAL_PATH)/proprietary/vendor/lib/hw/gralloc.capri.so:system/vendor/lib/hw/gralloc.capri.so \
     $(LOCAL_PATH)/proprietary/vendor/lib/hw/hwcomposer.capri.so:system/vendor/lib/hw/hwcomposer.capri.so \
