@@ -2,8 +2,9 @@
 
 [![Build LineageOS 16.0 (Android 9.0 Pie Go) - GT-I9082L](https://github.com/martinezjaviervargas86-crypto/gt-i9082l-lineage16-pie-go/actions/workflows/build_lineage16_i9082.yml/badge.svg)](https://github.com/martinezjaviervargas86-crypto/gt-i9082l-lineage16-pie-go/actions/workflows/build_lineage16_i9082.yml)
 
-> **Aviso importante:** Este es un proyecto comunitario experimental que lleva **Android 9.0 Pie (Android Go Edition)** al clásico **Samsung Galaxy Grand Duos (`GT-I9082L` / `GT-I9082`)**.  
-> **Realiza siempre un respaldo completo de tus particiones críticas (`EFS` y `modem`) antes de instalar.**
+> **⚠️ ADVERTENCIA — NO PROBADO EN ARRANQUE TODAVÍA (NO FLASHEAR):**  
+> Esta ROM se encuentra en etapa de **pre-arranque (bring-up inicial)** y **todavía no ha sido arrancada ni probada en un dispositivo físico**. **No la flashees** hasta que se verifique el primer arranque y se publique un reporte real de funcionamiento.  
+> Cuando esté lista para pruebas, **realiza siempre un respaldo completo de tus particiones críticas (`EFS` y `modem`) antes de instalar.**
 
 ---
 
