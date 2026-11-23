@@ -47,9 +47,8 @@ BOARD_CACHEIMAGE_PARTITION_SIZE := 1073741824
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 4404019200
 BOARD_FLASH_BLOCK_SIZE := 131072
 
-# Slim /system via minimal dexpreopt (fits easily inside 1.5 GB eMMC)
+# Full dexpreopt for snappy UI on dual-core Cortex-A9 (fits comfortably inside 1500 MB /system)
 WITH_DEXPREOPT := true
-WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := true
 DONT_DEXPREOPT_PREBUILTS := true
 
 # Legacy non-Treble VINTF Device Manifest (Pie HIDL wrappers)
@@ -78,10 +77,16 @@ TARGET_LD_SHIM_LIBS := \
     /system/lib/libbrcm_ril.so|libcapri_pie_shim.so \
     /system/lib/libtvservice_binder.so|libcapri_pie_shim.so \
     /system/lib/hw/audio.primary.capri.so|libcapri_pie_shim.so \
-    /system/vendor/lib/hw/hwcomposer.capri.so|libcapri_pie_shim.so \
+    /system/vendor/lib/hw/hwcomposer.capri.vendor.so|libcapri_pie_shim.so \
     /system/vendor/lib/hw/camera.capri.so|libcapri_pie_shim.so \
     /system/vendor/lib/egl/libGLES_vc4.so|libcapri_pie_shim.so \
     /system/bin/glgps|libglgps-compat.so
+
+# Allow legacy JB/KK text relocations in Broadcom/Samsung audio blobs (lib_Samsung_Resampler.so)
+TARGET_PROCESS_SDK_VERSION_OVERRIDE += \
+    /vendor/bin/hw/android.hardware.audio@2.0-service=22 \
+    /system/vendor/bin/hw/android.hardware.audio@2.0-service=22 \
+    /system/bin/mediaserver=22
 
 # Lineage Hardware / Samsung LiveDisplay & CABC
 BOARD_HARDWARE_CLASS += hardware/samsung/lineagehw

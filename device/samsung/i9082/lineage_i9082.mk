@@ -27,9 +27,7 @@ PRODUCT_MODEL := GT-I9082L
 
 PRODUCT_GMS_CLIENTID_BASE := android-samsung
 
-# Verified physical GT-I9082L (baffinvj / LatAm) identity
+# Keep system and vendor fingerprints aligned automatically (avoids Pie mismatch warning)
 PRODUCT_BUILD_PROP_OVERRIDES += \
     PRODUCT_NAME=baffinvj \
-    TARGET_DEVICE=baffin \
-    BUILD_FINGERPRINT="samsung/baffinvj/baffin:4.2.2/JDQ39/I9082LUBUBNE1:user/release-keys" \
-    PRIVATE_BUILD_DESC="baffinvj-user 4.2.2 JDQ39 I9082LUBUBNE1 release-keys"
+    TARGET_DEVICE=baffin

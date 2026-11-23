@@ -1,0 +1,24 @@
+From: GT-I9082L Pie Go Project <i9082l-pie-go@users.noreply.github.com>
+Subject: [PATCH 6/6] binder: prevent -ERESTARTSYS (-512) from leaking to userspace on suspend/wake
+
+On Linux 3.0.101 ARM32, PM freezer / suspend wakeups can interrupt
+binder_thread_read() and cause binder_ioctl() to return -ERESTARTSYS (-512)
+without a pending userspace signal. Android 9 IPCThreadState aborts
+SurfaceFlinger on unexpected errno -512, leaving the screen black after
+suspend/wake. Convert -ERESTARTSYS without signal_pending(current) to
+-EINTR, which IPCThreadState retries cleanly.
+
+---
+diff --git a/drivers/staging/android/binder.c b/drivers/staging/android/binder.c
+index 92305f7..20f58c3 100644
+--- a/drivers/staging/android/binder.c
++++ b/drivers/staging/android/binder.c
+@@ -3368,6 +3368,8 @@ err:
+ 	if (ret && ret != -ERESTARTSYS)
+ 		pr_info("%d:%d ioctl %x %lx returned %d\n", proc->pid, current->pid, cmd, arg, ret);
+ err_unlocked:
++	if (ret == -ERESTARTSYS && !signal_pending(current))
++		ret = -EINTR;
+ 	trace_binder_ioctl_done(ret);
+ 	return ret;
+ }

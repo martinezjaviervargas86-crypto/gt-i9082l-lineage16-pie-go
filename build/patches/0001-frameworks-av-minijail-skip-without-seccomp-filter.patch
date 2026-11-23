@@ -1,0 +1,28 @@
+diff --git a/services/minijail/minijail.cpp b/services/minijail/minijail.cpp
+index f213287..b94d98e 100644
+--- a/services/minijail/minijail.cpp
++++ b/services/minijail/minijail.cpp
+@@ -12,7 +12,10 @@
+ // See the License for the specific language governing permissions and
+ // limitations under the License.
+ 
++#include <errno.h>
+ #include <fcntl.h>
++#include <linux/seccomp.h>
++#include <sys/prctl.h>
+ #include <sys/stat.h>
+ #include <sys/types.h>
+ #include <unistd.h>
+@@ -55,6 +58,12 @@ int WritePolicyToPipe(const std::string& base_policy_content,
+ 
+ void SetUpMinijail(const std::string& base_policy_path, const std::string& additional_policy_path)
+ {
++    // Legacy kernels (e.g. Linux 3.0.101) without CONFIG_SECCOMP_FILTER return EINVAL.
++    if (prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, 0) < 0 && errno == EINVAL) {
++        LOG(WARNING) << "Kernel lacks SECCOMP_MODE_FILTER support; skipping minijail.";
++        return;
++    }
++
+     // No seccomp policy defined for this architecture.
+     if (access(base_policy_path.c_str(), R_OK) == -1) {
+         LOG(WARNING) << "No seccomp policy defined for this architecture.";

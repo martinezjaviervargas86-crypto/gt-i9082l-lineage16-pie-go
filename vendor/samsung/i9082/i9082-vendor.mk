@@ -41,7 +41,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/lib/hw/audio.primary.capri.so:system/lib/hw/audio.primary.capri.so \
     $(LOCAL_PATH)/proprietary/lib/hw/audio.usb.capri.so:system/lib/hw/audio.usb.capri.so \
     $(LOCAL_PATH)/proprietary/lib/hw/gps.capri.so:system/lib/hw/gps.capri.so \
-    $(LOCAL_PATH)/proprietary/lib/hw/sensors.capri.so:system/lib/hw/sensors.capri.so \
+    $(LOCAL_PATH)/proprietary/lib/hw/sensors.capri.so:system/lib/hw/sensors.capri.vendor.so \
     $(LOCAL_PATH)/proprietary/lib/libHDCPKeyManager.so:system/lib/libHDCPKeyManager.so \
     $(LOCAL_PATH)/proprietary/lib/libImmVibeJ.so:system/lib/libImmVibeJ.so \
     $(LOCAL_PATH)/proprietary/lib/libSoundAlive_VSP_ver312a.so:system/lib/libSoundAlive_VSP_ver312a.so \
@@ -103,7 +103,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/vendor/lib/egl/libGLES_vc4.so:system/vendor/lib/libGLES_vc4.so \
     $(LOCAL_PATH)/proprietary/vendor/lib/hw/camera.capri.so:system/vendor/lib/hw/camera.capri.so \
     $(LOCAL_PATH)/proprietary/vendor/lib/hw/gralloc.capri.so:system/vendor/lib/hw/gralloc.capri.so \
-    $(LOCAL_PATH)/proprietary/vendor/lib/hw/hwcomposer.capri.so:system/vendor/lib/hw/hwcomposer.capri.so \
+    $(LOCAL_PATH)/proprietary/vendor/lib/hw/hwcomposer.capri.so:system/vendor/lib/hw/hwcomposer.capri.vendor.so \
     $(LOCAL_PATH)/proprietary/vendor/lib/hw/lights.capri.so:system/vendor/lib/hw/lights.capri.so \
     $(LOCAL_PATH)/proprietary/vendor/lib/libWVStreamControlAPI_L3.so:system/vendor/lib/libWVStreamControlAPI_L3.so \
     $(LOCAL_PATH)/proprietary/vendor/lib/libwvdrm_L3.so:system/vendor/lib/libwvdrm_L3.so

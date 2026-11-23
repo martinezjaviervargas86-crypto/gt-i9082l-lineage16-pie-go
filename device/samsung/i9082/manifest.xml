@@ -30,10 +30,10 @@
         </interface>
     </hal>
 
-    <!-- Camera HAL1 provider (wraps camera.capri.so) -->
+    <!-- Camera HAL1 provider (passthrough in-process on /dev/binder for camera.capri.so) -->
     <hal format="hidl">
         <name>android.hardware.camera.provider</name>
-        <transport>hwbinder</transport>
+        <transport arch="32">passthrough</transport>
         <version>2.4</version>
         <interface>
             <name>ICameraProvider</name>
@@ -78,10 +78,10 @@
         </interface>
     </hal>
 
-    <!-- Graphics: Broadcom VideoCore IV (gralloc.capri.so + hwcomposer.capri.so HWC1) -->
+    <!-- Graphics: Broadcom VideoCore IV (passthrough in-process for shared VCHIQ/WFC/UMEM) -->
     <hal format="hidl">
         <name>android.hardware.graphics.allocator</name>
-        <transport>hwbinder</transport>
+        <transport arch="32">passthrough</transport>
         <version>2.0</version>
         <interface>
             <name>IAllocator</name>
@@ -90,7 +90,7 @@
     </hal>
     <hal format="hidl">
         <name>android.hardware.graphics.composer</name>
-        <transport>hwbinder</transport>
+        <transport arch="32">passthrough</transport>
         <version>2.1</version>
         <interface>
             <name>IComposer</name>

@@ -104,6 +104,11 @@ jobs:
             git apply "$p"
           done
 
+          echo "=== Aplicando overlay FUSE sdcard y parches de frameworks para kernel 3.0.101 ==="
+          rm -rf "$LOS_DIR/system/core/sdcard"/*
+          cp -a "$GITHUB_WORKSPACE/build/overlays/system_core_sdcard/." "$LOS_DIR/system/core/sdcard/"
+          (cd "$LOS_DIR/frameworks/av" && git apply "$GITHUB_WORKSPACE/build/patches/0001-frameworks-av-minijail-skip-without-seccomp-filter.patch")
+
           echo "=== Liberando .repo y prebuilts no usados (~22 GB recuperados) ==="
           cd "$LOS_DIR"
           rm -rf .repo \
@@ -126,7 +131,7 @@ jobs:
           source build/envsetup.sh
           MKA_TARGETS="${{ inputs.build_target }}"
           if [ "$MKA_TARGETS" = "bootimage" ]; then
-            MKA_TARGETS="bootimage libcapri_pie_shim"
+            MKA_TARGETS="bootimage libcapri_pie_shim hwcomposer.capri sensors.capri"
           fi
           (lunch lineage_i9082-userdebug && mka $MKA_TARGETS -j"$(nproc)") 2>&1 | tee "$GITHUB_WORKSPACE/build.log"
           df -h

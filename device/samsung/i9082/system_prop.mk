@@ -63,12 +63,15 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.call_ring=0 \
     ro.telephony.default_network=0,0
 
-# === Connectivity & Broadcom Platform ===
+# === Connectivity, Storage (FUSE) & Broadcom Platform ===
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.brcm.log=none \
     persist.brcm.ap_crash=none \
     persist.brcm.cp_crash=none \
     wifi.interface=wlan0 \
+    ro.sys.sdcardfs=false \
+    persist.sys.sdcardfs=force_off \
+    ro.setupwizard.mode=DISABLED \
     ro.lineage.hardware.cabc=/sys/class/mdnie/mdnie/cabc \
     persist.sys.timezone=America/Santiago
 

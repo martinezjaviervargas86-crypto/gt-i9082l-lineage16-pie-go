@@ -9,7 +9,6 @@
 #include <errno.h>
 #include <net/if.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
@@ -17,32 +16,10 @@
 
 #include <binder/IPCThreadState.h>
 #include <binder/Parcel.h>
-#include <binder/ProcessState.h>
 #include <log/log.h>
 #include <utils/RefBase.h>
 
 using namespace android;
-
-/*
- * Broadcom tvserver is a prebuilt JB/KK daemon that registers "broadcom.tvservice"
- * using ProcessState::self() (which defaults to /dev/binder on Android 9 Pie).
- * However, all its Pie HIDL consumers (hwcomposer.capri.so in composer@2.1-service,
- * camera.capri.so in camera.provider@2.4-service, audio.hdmi.capri.so in audio@2.0)
- * run on /dev/vndbinder. Initialize /dev/vndbinder before tvserver::main() runs.
- */
-__attribute__((constructor))
-static void capri_tvserver_init_vndbinder(void) {
-    const char *prog = getprogname();
-    if (!prog) {
-        return;
-    }
-    const char *base = strrchr(prog, '/');
-    base = base ? base + 1 : prog;
-    if (strcmp(base, "tvserver") == 0) {
-        ALOGI("capri_pie_shim: redirecting tvserver ProcessState to /dev/vndbinder");
-        ProcessState::initWithDriver("/dev/vndbinder");
-    }
-}
 
 extern "C" {
 

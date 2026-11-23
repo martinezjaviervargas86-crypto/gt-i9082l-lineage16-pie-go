@@ -479,6 +479,13 @@ on property:init.svc.macloader=stopped
     chmod 0664 /data/.cid.info
     chown system root /data/.rev
     chmod 0660 /data/.rev
+    start brcm_wifi_load
+
+service brcm_wifi_load /system/bin/insmod /vendor/lib/modules/dhd.ko firmware_path=/system/etc/wifi/bcmdhd_sta.bin_b2 nvram_path=/system/etc/wifi/nvram_net.txt
+    user root
+    group root wifi
+    disabled
+    oneshot
 # end of wifi
 
 service gpsd /system/bin/glgps -c /system/etc/gps/glconfig.xml
@@ -524,6 +531,16 @@ on property:dev.bootcomplete=1
     write /proc/sys/vm/vfs_cache_pressure 100
     write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,55296,80640"
     swapon_all /fstab.capri
+
+# Ensure first-boot provisioning flags (Home/Menu/QuickSettings/Brightness) & ADB over Wi-Fi
+on property:sys.boot_completed=1
+    start brcm_post_boot
+
+service brcm_post_boot /system/bin/sh -c "/system/bin/settings put global device_provisioned 1; /system/bin/settings put secure user_setup_complete 1; /system/bin/setprop service.adb.tcp.port 5555; /system/bin/setprop ctl.restart adbd"
+    user root
+    group root system
+    disabled
+    oneshot
 
 # Vibetonz
 service immvibed /system/bin/immvibed

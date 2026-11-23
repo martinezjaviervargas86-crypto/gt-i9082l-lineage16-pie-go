@@ -33,13 +33,17 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayouts/samsung-keypad.kl:system/usr/keylayout/samsung-keypad.kl \
     $(LOCAL_PATH)/keylayouts/sii9234_rcp.kl:system/usr/keylayout/sii9234_rcp.kl
 
-# Pie ABI Compatibility Shims & Legacy Runtime Libraries
+# Pie ABI Compatibility Shims, HAL Wrappers & Legacy Runtime Libraries
 PRODUCT_PACKAGES += \
     libcapri_pie_shim \
     libglgps-compat \
+    hwcomposer.capri \
+    sensors.capri \
+    libbt-vendor \
     charger_res_images
 
 # Android 9.0 Pie HIDL HAL Wrappers (bridging legacy Broadcom Capri HAL1 blobs)
+# Graphics (allocator/composer/mapper) & Camera use 32-bit passthrough for shared VCHIQ/WFC/binder
 PRODUCT_PACKAGES += \
     android.hardware.audio@2.0-impl \
     android.hardware.audio@2.0-service \
@@ -47,7 +51,6 @@ PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-impl \
     android.hardware.bluetooth@1.0-service \
     android.hardware.camera.provider@2.4-impl \
-    android.hardware.camera.provider@2.4-service \
     camera.device@1.0-impl \
     android.hardware.configstore@1.1-service \
     android.hardware.drm@1.0-impl \
@@ -56,9 +59,7 @@ PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0-impl \
     android.hardware.gnss@1.0-service \
     android.hardware.graphics.allocator@2.0-impl \
-    android.hardware.graphics.allocator@2.0-service \
     android.hardware.graphics.composer@2.1-impl \
-    android.hardware.graphics.composer@2.1-service \
     android.hardware.graphics.mapper@2.0-impl \
     android.hardware.health@2.0-impl \
     android.hardware.health@2.0-service \

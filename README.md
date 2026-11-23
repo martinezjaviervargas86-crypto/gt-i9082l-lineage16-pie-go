@@ -2,9 +2,15 @@
 
 [![Build LineageOS 16.0 (Android 9.0 Pie Go) - GT-I9082L](https://github.com/martinezjaviervargas86-crypto/gt-i9082l-lineage16-pie-go/actions/workflows/build_lineage16_i9082.yml/badge.svg)](https://github.com/martinezjaviervargas86-crypto/gt-i9082l-lineage16-pie-go/actions/workflows/build_lineage16_i9082.yml)
 
-> **⚠️ ADVERTENCIA — NO PROBADO EN ARRANQUE TODAVÍA (NO FLASHEAR):**  
-> Esta ROM se encuentra en etapa de **pre-arranque (bring-up inicial)** y **todavía no ha sido arrancada ni probada en un dispositivo físico**. **No la flashees** hasta que se verifique el primer arranque y se publique un reporte real de funcionamiento.  
-> Cuando esté lista para pruebas, **realiza siempre un respaldo completo de tus particiones críticas (`EFS` y `modem`) antes de instalar.**
+> **🧪 ESTADO ACTUAL — ALFA FUNCIONAL (ARRANQUE VERIFICADO EN HARDWARE REAL `GT-I9082L`):**  
+> Esta ROM **ya arranca hasta el escritorio de LineageOS 16.0 (Android 9.0 Pie Go)** en un **Samsung Galaxy Grand Duos `GT-I9082L`** físico con aceleración gráfica **VideoCore IV OpenGL ES 2.0**, 512 MB de ZRAM y táctil/brillo operativos.  
+> Actualmente se encuentra en **Fase 2 de estabilización** (validando Wi-Fi, Audio, Bluetooth, Sensores, Cámara, almacenamiento `/sdcard` por FUSE y suspensión/despertar). **Haz siempre respaldo de `EFS` y `modem` antes de probar.**
+
+### Estado de funciones (pruebas en `GT-I9082L` físico)
+- ✅ **Arranque completo a Android 9.0 Pie Go (`sys.boot_completed=1`)**
+- ✅ **Pantalla, táctil, brillo, panel de notificaciones y GPU VideoCore IV (OpenGL ES 2.0)**
+- ✅ **512 MB ZRAM (LZ4) y perfil Android Go 1 GB RAM**
+- 🔄 **En validación (Fase 2):** Wi-Fi (`dhd.ko`), Audio (`audio.primary.capri.so`), Bluetooth (`BCM4334`), Sensores (wrapper HAL 1.3), almacenamiento interno (`/sdcard` FUSE), Cámara, suspensión/despertar y Dual-SIM (`rild`)
 
 ---
 
